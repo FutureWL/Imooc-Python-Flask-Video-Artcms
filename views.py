@@ -1,10 +1,14 @@
 # coding:utf8
-from flask import Flask, render_template, redirect
+import datetime
+import pymysql
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, redirect, flash
 from forms import LoginForm, RegisterForm, ArtForm
+from models import User, db
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "12345678"
-
 
 # 登录
 @app.route("/login/", methods=["GET", "POST"])
@@ -17,6 +21,22 @@ def login():
 @app.route("/register/", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
+    if form.validate_on_submit():
+        data = form.data
+        # 保存数据
+        user = User(
+            name=data["name"],
+            pwd=generate_password_hash(data["pwd"]),
+            addtime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+        db.session.add(user)
+        db.session.commit()
+        # 定义一个会话闪现
+        flash(u"注册成功，请登录!", "ok")
+        return redirect("/login/")
+    else:
+        flash(u"注册失败，请重新登录!", "err")
+        return redirect("/register/")
     return render_template("register.html", title=u"注册", form=form)  # 渲染模版
 
 
@@ -52,4 +72,4 @@ def art_list():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="127.0.0.1", port=8808)
+    app.run(debug=True, host="127.0.0.1", port=8888)

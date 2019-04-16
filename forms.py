@@ -1,6 +1,7 @@
 # coding:utf8
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, FileField, TextAreaField
+from wtforms.validators import DataRequired, EqualTo, ValidationError
 
 """"
 登录表单：
@@ -52,7 +53,9 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     name = StringField(
         label=u"账号",
-        validators=[],
+        validators=[
+            DataRequired(u"账号不能为空!")
+        ],
         description=u"账号",
         render_kw={
             "class": "form-control",
@@ -62,7 +65,9 @@ class RegisterForm(FlaskForm):
 
     pwd = PasswordField(
         label=u"密码",
-        validators=[],
+        validators=[
+            DataRequired(u"密码不能为空!")
+        ],
         description=u"密码",
         render_kw={
             "class": "form-control",
@@ -72,7 +77,10 @@ class RegisterForm(FlaskForm):
 
     repwd = PasswordField(
         label=u"确认密码",
-        validators=[],
+        validators=[
+            DataRequired(u"确认密码不能为空!"),
+            EqualTo('pwd', message=u"两次输入密码不一致！")
+        ],
         description=u"确认密码",
         render_kw={
             "class": "form-control",
@@ -82,7 +90,9 @@ class RegisterForm(FlaskForm):
 
     code = StringField(
         label=u"验证码",
-        validators=[],
+        validators=[
+            DataRequired(u"验证码不能为空!")
+        ],
         description=u"验证码",
         render_kw={
             "class": "form-control",

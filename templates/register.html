@@ -1,26 +1,42 @@
 {% extends "user.html" %}
 {% block content %}
-<form action="">
+<form method="post">
+    {% for msg in get_flashed_messages(category_filter=['err']) %}
+    <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
     <div class="form-group">
         <label>账号</label>
         {{ form.name }}
+        {% for v in form.name.errors %}
+        <p style="color:red;">{{ v }}</p>
+        {% endfor %}
     </div>
     <div class="form-group">
         <label>密码</label>
         {{ form.pwd }}
+        {% for v in form.pwd.errors %}
+        <p style="color:red;">{{v}}</p>
+        {% endfor %}
     </div>
     <div class="form-group">
         <label>确认密码</label>
         {{ form.repwd }}
+        {% for v in form.repwd.errors %}
+        <p style="color:red;">{{v}}</p>
+        {% endfor %}
     </div>
     <div class="form-group">
         <label>验证码</label>
         {{ form.code }}
+        {% for v in form.code.errors %}
+        <p style="color:red;">{{v}}</p>
+        {% endfor %}
         <img data-src="holder.js/180x50" style="margin-top: 6px;">
     </div>
     <a href="/login/">已有账号，前往登录</a>
     <br>
     {{ form.submit }}
+    {{ form.csrf_token }}
 </form>
 {% endblock %}
 
