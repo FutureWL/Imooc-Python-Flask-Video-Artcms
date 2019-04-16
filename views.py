@@ -1,19 +1,23 @@
 # coding:utf8
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect
+from forms import LoginForm, RegisterForm, ArtForm
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "12345678"
 
 
 # 登录
 @app.route("/login/", methods=["GET", "POST"])
 def login():
-    return render_template("login.html", title=u"登录")  # 渲染模版
+    form = LoginForm()
+    return render_template("login.html", title=u"登录", form=form)  # 渲染模版
 
 
 # 注册
 @app.route("/register/", methods=["GET", "POST"])
 def register():
-    return render_template("register.html", title=u"注册")  # 渲染模版
+    form = RegisterForm()
+    return render_template("register.html", title=u"注册", form=form)  # 渲染模版
 
 
 # 退出(302跳转到登录页面)
@@ -25,7 +29,8 @@ def logout():
 # 发布文章
 @app.route("/art/add/", methods=["GET", "POST"])
 def art_add():
-    return render_template("art_add.html", title=u"发布文章")
+    form = ArtForm()
+    return render_template("art_add.html", title=u"发布文章", form=form)
 
 
 # 编辑文章
