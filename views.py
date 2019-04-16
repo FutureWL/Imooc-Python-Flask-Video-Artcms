@@ -25,7 +25,7 @@ def logout():
 # 发布文章
 @app.route("/art/add/", methods=["GET", "POST"])
 def art_add():
-    return render_template("art_add.html")
+    return render_template("art_add.html", title=u"发布文章")
 
 
 # 编辑文章
@@ -43,7 +43,7 @@ def art_del(id):
 # 文章列表
 @app.route("/art/list/", methods=["GET"])
 def art_list():
-    return render_template("art_list.html")
+    return render_template("art_list.html", title=u"文章列表")
 
 
 if __name__ == '__main__':
