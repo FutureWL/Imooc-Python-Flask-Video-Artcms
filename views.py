@@ -7,13 +7,13 @@ app = Flask(__name__)
 # 登录
 @app.route("/login/", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")  # 渲染模版
+    return render_template("login.html", title=u"登录")  # 渲染模版
 
 
 # 注册
 @app.route("/register/", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")  # 渲染模版
+    return render_template("register.html", title=u"注册")  # 渲染模版
 
 
 # 退出(302跳转到登录页面)
