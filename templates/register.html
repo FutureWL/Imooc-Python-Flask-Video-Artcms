@@ -31,7 +31,8 @@
         {% for v in form.code.errors %}
         <p style="color:red;">{{v}}</p>
         {% endfor %}
-        <img data-src="holder.js/180x50" style="margin-top: 6px;">
+        <img alt="点击切换" title="点击切换" src="/codes/" onclick="this.src='/codes/?'+Math.random()"
+             style="margin-top: 6px; width: 180px; height: 50px;">
     </div>
     <a href="/login/">已有账号，前往登录</a>
     <br>

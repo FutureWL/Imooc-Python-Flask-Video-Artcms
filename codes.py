@@ -5,7 +5,7 @@ import random
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 
-class Code:
+class Codes:
     # 随机一个字母或者数字s
     def random_chr(self):
         num = random.randint(1, 3)
@@ -46,7 +46,7 @@ class Code:
         width = 240
         height = 60
         # 创建一个图片
-        image = Image.new("RGB", (width, height), (192, 192, 192))
+        image = Image.new("RGB", (width, height), (255, 255, 255))
         # image.show()
         # 创建 font 对象，定义字体和大小
         font_name = random.randint(1, 3)
@@ -89,7 +89,7 @@ class Code:
 
 
 if __name__ == '__main__':
-    c = Code()
+    c = Codes()
     # print (c.random_chr())
     # print (c.random_dis())
     # print (c.random_color1())

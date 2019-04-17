@@ -1,4 +1,5 @@
 # coding:utf8
+from flask import session
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, FileField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
@@ -15,7 +16,9 @@ from models import User
 class LoginForm(FlaskForm):
     name = StringField(
         label=u"账号",
-        validators=[],
+        validators=[
+            DataRequired(u"账号不能为空！")
+        ],
         description=u"账号",
         render_kw={
             "class": "form-control",
@@ -25,7 +28,9 @@ class LoginForm(FlaskForm):
 
     pwd = PasswordField(
         label=u"密码",
-        validators=[],
+        validators=[
+            DataRequired(u"密码不能为空！")
+        ],
         description=u"密码",
         render_kw={
             "class": "form-control",
@@ -39,6 +44,12 @@ class LoginForm(FlaskForm):
             "class": "btn btn-primary"
         }
     )
+
+    def validate_pwd(self, field):
+        pwd = field.data
+        user = User.query.filter_by(name=self.name.data).first()
+        if not user.check_pwd(pwd):
+            raise ValidationError(u"密码不正确！")
 
 
 """"
@@ -114,6 +125,14 @@ class RegisterForm(FlaskForm):
         user = User.query.filter_by(name=name).count()
         if user > 0:
             raise ValidationError(u"账号已存在，不能重复注册！")
+
+    # 自定义验证码验证功能
+    def validate_code(self, field):
+        code = field.data
+        if not session.has_key("code"):
+            raise ValidationError(u"没有验证码!")
+        if session.has_key("code") and session["code"].lower() != code.lower():
+            raise ValidationError(u"验证码不正确!")
 
 
 """"

@@ -1,7 +1,8 @@
 # coding:utf8
+import os
 import datetime
 
-from flask import render_template, redirect, flash
+from flask import render_template, redirect, flash, session, Response
 from forms import LoginForm, ArtForm, RegisterForm
 from models import app, db, User
 from werkzeug.security import generate_password_hash
@@ -13,6 +14,11 @@ app.config['SECRET_KEY'] = "1234"
 @app.route("/login/", methods=["GET", "POST"])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        data = form.data
+        session["user"] = data["name"]
+        flash("登录成功!", "ok")
+        return redirect("/art/list/")
     return render_template("login.html", title=u"登录", form=form)  # 渲染模版
 
 
@@ -67,6 +73,19 @@ def art_del(id):
 @app.route("/art/list/", methods=["GET"])
 def art_list():
     return render_template("art_list.html", title=u"文章列表")
+
+
+# 验证码
+@app.route("/codes/", methods=["GET"])
+def codes():
+    from codes import Codes
+    c = Codes()
+    info = c.create_code()
+    image = os.path.join(os.path.dirname(__file__), "static/code") + "/" + info["img_name"]
+    with open(image) as f:
+        image = f.read()
+    session["code"] = info["code"]
+    return Response(image, mimetype="jpeg")
 
 
 if __name__ == '__main__':
