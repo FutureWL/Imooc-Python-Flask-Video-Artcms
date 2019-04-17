@@ -2,6 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, FileField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
+from models import User
 
 """"
 登录表单：
@@ -106,6 +107,13 @@ class RegisterForm(FlaskForm):
             "class": "btn btn-success"
         }
     )
+
+    # 自定义字段验证规则：validate_字段名
+    def validate_name(self, field):
+        name = field.data
+        user = User.query.filter_by(name=name).count()
+        if user > 0:
+            raise ValidationError(u"账号已存在，不能重复注册！")
 
 
 """"
