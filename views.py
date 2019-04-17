@@ -10,7 +10,7 @@ import datetime
 
 from flask import render_template, redirect, flash, session, Response, url_for, request
 from forms import LoginForm, ArtForm, RegisterForm
-from models import app, db, User
+from models import app, db, User, Art
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from functools import wraps
@@ -92,9 +92,22 @@ def art_add():
         logo = change_name(file)
         if not os.path.exists(app.config["UP"]):
             os.makedirs(app.config["UP"])
-        # 获取用户ID
+        # 保存文件
         form.logo.data.save(app.config["UP"] + "/" + logo)
+        # 获取用户ID
+        user = User.query.filter_by(name=session["user"]).first()
+        user_id = user.id
         # 保存数据
+        art = Art(
+            title=data["title"],
+            cate=data["cate"],
+            user_id=user_id,
+            logo=logo,
+            content=data["content"],
+            addtime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+        db.session.add(art)
+        db.session.commit()
     return render_template("art_add.html", title=u"发布文章", form=form)
 
 
@@ -113,10 +126,19 @@ def art_del(id):
 
 
 # 文章列表
-@app.route("/art/list/", methods=["GET"])
+@app.route("/art/list/<int:page>/", methods=["GET"])
 @user_login_req
-def art_list():
-    return render_template("art_list.html", title=u"文章列表")
+def art_list(page=None):
+    if page is None:
+        page = 1
+        user = User.query.filter_by(name=session["user"]).first()
+        page_data = Art.query.filter_by(
+            user_id=user.id
+        ).order_by(
+            Art.addtime.desc()
+        ).pageinate(page=1, per_page=3)
+        cate = [(1, u"科技"), (2, u"搞笑"), (3, u"军事")]
+    return render_template("art_list.html", title=u"文章列表", page_data=page_data, cate=cate)
 
 
 # 验证码

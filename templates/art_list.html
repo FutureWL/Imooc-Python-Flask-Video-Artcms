@@ -21,15 +21,16 @@
         <th>管理操作</th>
     </tr>
     </thead>
-    {% for v in range(1,11) %}
+    {% for v in page_data.items %}
     <tr>
-        <td>火星发现淡水</td>
-        <td>科技</td>
+        <td>{{ v.title }}</td>
+        <td>{{ cate[v.cate-1][1 }}</td>
         <td>
-            <img data-src="holder.js/75x40">
+            <!--<img data-src="holder.js/75x40">-->
+            <img src="/static/uploads/{{v.logo}}" style="width: 75px;height: 40px;">
         </td>
-        <td>imooc</td>
-        <td>2018-01-01 12:00:00</td>
+        <td>{{ session["user"] }}</td>
+        <td>{{ v.addtime }}</td>
         <td>
             <button class="btn btn-sm btn-outline-warning">编辑</button>
             <button class="btn btn-sm btn-outline-danger">删除</button>
