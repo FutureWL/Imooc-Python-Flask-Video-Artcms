@@ -1,4 +1,9 @@
 # coding:utf8
+import sys
+
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 import os
 import datetime
 
@@ -47,6 +52,7 @@ def register():
 # 退出(302跳转到登录页面)
 @app.route("/logout/", methods=["GET"])
 def logout():
+    session.pop("user", None)
     return redirect("/login")
 
 

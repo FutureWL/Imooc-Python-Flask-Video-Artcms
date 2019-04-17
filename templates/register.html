@@ -1,9 +1,6 @@
 {% extends "user.html" %}
 {% block content %}
 <form method="post">
-    {% for msg in get_flashed_messages(category_filter=['err']) %}
-    <p style="color:red;">{{ msg }}</p>
-    {% endfor %}
     <div class="form-group">
         <label>账号</label>
         {{ form.name }}
