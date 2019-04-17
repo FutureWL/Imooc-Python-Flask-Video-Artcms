@@ -13,7 +13,7 @@
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
     <div class="container">
         <a href="" class="navbar-brand">文章管理系统</a>
-        <a href="/login/" class="btn btn-outline-danger">{{ session.user }} -> 退出</a>
+        <a href="/logout/" class="btn btn-outline-danger">{{ session['user'] }} -> 退出</a>
     </div>
 </nav>
 <div class="container" style="margin-top: 6px;">

@@ -149,7 +149,9 @@ class ArtForm(FlaskForm):
     title = StringField(
         label=u"标题",
         description=u"标题",
-        validators=[],
+        validators=[
+            DataRequired(u"标题不能为空")
+        ],
         render_kw={
             "class": "form-control",
             "placeholder": u"请输入标题!"
@@ -158,7 +160,9 @@ class ArtForm(FlaskForm):
     cate = SelectField(
         label=u"分类",
         description=u"分类",
-        validators=[],
+        validators=[
+            DataRequired(u"分类不能为空")
+        ],
         choices=[(1, u"科技"), (2, u"搞笑"), (3, u"军事")],
         default=3,
         coerce=int,
@@ -169,7 +173,9 @@ class ArtForm(FlaskForm):
     logo = FileField(
         label=u"封面",
         description=u"封面",
-        validators=[],
+        validators=[
+            DataRequired(u"封面不能为空")
+        ],
         render_kw={
             "class": "form-control-file"
         }
@@ -177,7 +183,9 @@ class ArtForm(FlaskForm):
     content = TextAreaField(
         label=u"内容",
         description=u"内容",
-        validators=[],
+        validators=[
+            DataRequired(u"内容不能为空")
+        ],
         render_kw={
             "style": "height:300px;",
             "id": "content"
