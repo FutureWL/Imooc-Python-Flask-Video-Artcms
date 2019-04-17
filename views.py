@@ -1,14 +1,13 @@
 # coding:utf8
 import datetime
-import pymysql
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, redirect, flash
-from forms import LoginForm, RegisterForm, ArtForm
-from models import User, db
+
+from flask import render_template, redirect, flash
+from forms import LoginForm, ArtForm, RegisterForm
+from models import app, db, User
 from werkzeug.security import generate_password_hash
 
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "12345678"
+app.config['SECRET_KEY'] = "1234"
+
 
 # 登录
 @app.route("/login/", methods=["GET", "POST"])
@@ -35,8 +34,7 @@ def register():
         flash(u"注册成功，请登录!", "ok")
         return redirect("/login/")
     else:
-        flash(u"注册失败，请重新登录!", "err")
-        return redirect("/register/")
+        flash(u"请输入正确信息注册!", "err")
     return render_template("register.html", title=u"注册", form=form)  # 渲染模版
 
 
